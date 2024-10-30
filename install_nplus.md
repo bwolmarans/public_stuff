@@ -4,7 +4,6 @@ Install NGINX+ on Ubuntu
 * You need a trial from myF5 of N+ nginx-repo.cert and nginx-repo.key.  Get both of these files you're going to need them.
 * Now you're going to add your NGINX Plus repo cert and key to /etc/ssl/nginx. You will need to be root or use sudo. Use vi, use echo, use a heredoc, use any tool you want with some copy paste magic.   As you can see I'm using root here. 
 ```bash
-sudo apt-get update
 sudo bash
 cd /etc/ssl
 mkdir nginx
@@ -18,6 +17,7 @@ exit
 ```
 ```bash
 cd ~ubuntu
+sudo apt-get update
 echo Y | sudo apt-get install apt-transport-https lsb-release ca-certificates wget gnupg2 ubuntu-keyring
 ```
 ```bash
