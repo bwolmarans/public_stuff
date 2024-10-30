@@ -18,6 +18,8 @@ exit
 ```bash
 cd ~ubuntu
 sudo apt-get update
+```
+```bash
 echo Y | sudo apt-get install apt-transport-https lsb-release ca-certificates wget gnupg2 ubuntu-keyring
 ```
 ```bash
