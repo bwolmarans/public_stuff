@@ -1,7 +1,7 @@
 Install NGINX+ on Ubuntu
 -------------------------
 
-* You need a trial from myF5 of N+ nginx-repo.cert and nginx-repo.key.  Get both of these files on your local laptop.
+* You need a trial from myF5 of N+ nginx-repo.cert and nginx-repo.key.  Get both of these files you're going to need them.
 
 ```bash
 sudo apt-get update
