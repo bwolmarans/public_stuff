@@ -8,16 +8,11 @@ sudo apt-get update
 sudo mkdir -p /etc/ssl/nginx
 cd /etc/ssl/nginx/
 ```
-* become root, i.e. sudo bash so you have a root prompt #
-
+* Now you're going to add your NGINX Plus repo cert and key to /etc/ssl/nginx. You will need to be root or sudo priv. Use vi, use echo, use a heredoc, use any tool you want with some copy paste magic.   
 ```bash
 sudo bash
 ```
-
-* Now you're going to add your NGINX Plus repo cert and key to /etc/ssl/nginx.  This is probably not copy and paste from this file.  Instead you will need to know how to use vi. In this /etc/ssl/nginx directory, as root, use vi to create nginx-repo.crt and nginx-repo.key.  You can copy and paste the text from your files you got from your myF5 trial, because these files are just plain text files. 
-
 * When are done with this, you can exit out of root by doing su ubuntu or exit if you were at the root prompt #
-
 ```bash
 exit 
 ```
