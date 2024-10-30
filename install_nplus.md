@@ -5,10 +5,8 @@ Install NGINX+ on Ubuntu
 
 ```bash
 sudo apt-get update
-sudo mkdir -p /etc/ssl/nginx
-cd /etc/ssl/nginx/
 ```
-* Now you're going to add your NGINX Plus repo cert and key to /etc/ssl/nginx. You will need to be root or sudo priv. Use vi, use echo, use a heredoc, use any tool you want with some copy paste magic.   
+* Now you're going to add your NGINX Plus repo cert and key to /etc/ssl/nginx. You will need to be root or use sudo. Use vi, use echo, use a heredoc, use any tool you want with some copy paste magic.   As you can see I'm using root here. 
 ```bash
 sudo bash
 cd /etc/ssl
@@ -17,7 +15,7 @@ cd nginx
 echo '<paste the text of your repo crt>' > nginx-repo.crt
 echo '<paste the text of your repo key>' > nginx-repo.key
 ```
-* When are done with this, you can exit out of root by doing su ubuntu or exit if you were at the root prompt #
+* When are done with this, if you used root, you can exit back out of root
 ```bash
 exit 
 ```
