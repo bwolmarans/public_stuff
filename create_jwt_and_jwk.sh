@@ -6,6 +6,17 @@
 # purpose: creates a jwt and jwk based on Liam's blog
 # credit : Liam's blog https://www.f5.com/company/blog/nginx/authenticating-api-clients-jwt-nginx-plus
 # author : b.wolmarans@f5.com
+#
+#
+# tests
+# -----
+#
+# user-agent.txt Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 OPR/114.0.0.0
+#
+# curl -A "`cat user-agent.txt`"  -X POST -k https://jobs.local/add-job --data '["big dog"]' -H "content-type: application/json"
+# curl -X POST -k https://jobs.local/add-job --data '["big dog"]' -H "content-type: application/json"
+# curl -A "`cat user-agent.txt`"  -X POST -k https://jobs.local/add-job --data '["big dog"]' -H "content-type: application/json"
+# curl -H "Authorization: Bearer `cat quotes.jwt`" -X POST -k https://jobs.local/add-job --data '["big dog"]' -H "content-type: application/json"
 
 JWT_HEADER='{"typ":"JWT","alg":"HS256","kid":"0001"}'
 JWT_PAYLOAD='{"name":"Quotation System","sub":"quotes","iss":"My API Gateway"}'
