@@ -1,6 +1,11 @@
-# Dockerfile for NGINX Plus R33+ with Agent connecting to Mgmt Plane ( N1  Console or NIM)
 # ----------------------------------------------------------------------------------------
+# Dockerfile for NGINX Plus R33+ with Agentv2 connecting to Mgmt Plane ( N1  Console or NIM)
+# ----------------------------------------------------------------------------------------
+#
+# Note: THIS IS A FIELD-DEVELOPED EXAMPLE ONLY, do not use in Production or Critical Deployments.
+#
 # Requirements: nginx-agent.conf, nginx-repo.crt, nginx-repo.key, and license.jwt in the default build context (aka current directory)
+# Notes: For Agent v2 only, not for Agent v3
 #
 # Usage:
 #   docker build  --no-cache --secret id=nginx-key,src=nginx-repo.key --secret id=nginx-crt,src=nginx-repo.crt --secret id=license-jwt,src=license.jwt -t nginxplus-r34-agent-n1c .
@@ -98,7 +103,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://p
     && apt-get -y update \
     && apt-get -y install --no-install-recommends --no-install-suggests nginx-agent=2*
 
-COPY nginx-agent.conf.v2 /etc/nginx-agent/nginx-agent.conf
+COPY nginx-agent.conf /etc/nginx-agent/nginx-agent.conf
 
 EXPOSE 80
 
