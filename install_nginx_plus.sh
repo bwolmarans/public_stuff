@@ -4,6 +4,18 @@
 # --------------------------------
 # b.wolmarans@f5.com 4/8/2025
 #
+confirm() {
+    # call with a prompt string or use a default
+    read -r -p "${1:-Enter y or N? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
 echo ""
 echo "NGINX Plus Simple Install Script"
 echo "--------------------------------"
@@ -40,19 +52,74 @@ echo "--------------------------------------------------------------------------
 echo ""
 sudo wget -P /etc/apt/apt.conf.d https://cs.nginx.com/static/files/90pkgs-nginx
 echo ""
+#echo "-------------------------------------------------------------------------------"
+#echo "Backing up /etc/ssl/nginx"
+#echo "-------------------------------------------------------------------------------"
+#echo ""
+sudo mkdir /etc/ssl/nginx
+#sudo mkdir /etc/ssl/nginx-backup
+#sudo mv /etc/ssl/nginx/* /etc/ssl/nginx-backup
+echo ""
 echo "-------------------------------------------------------------------------------"
+echo "Enter your nginx repository certificate ( paste it ) and end with a single asterix '*'"
+echo "-------------------------------------------------------------------------------"
+echo ""
+read -d '*' input
+echo ""
+echo "-------------------------------------------------------------------------------"
+echo "Writing this to /etc/ssl/nginx/nginx-repo.crt"
+echo "-------------------------------------------------------------------------------"
+echo ""
+sudo touch /etc/ssl/nginx/nginx-repo.crt
+sudo chmod 666 /etc/ssl/nginx/nginx-repo.crt
+sudo echo "$input" > /etc/ssl/nginx/nginx-repo.crt
+sudo chmod 644 /etc/ssl/nginx/nginx-repo.crt
+echo ""
+echo "-------------------------------------------------------------------------------"
+echo "Enter your nginx repository key ( paste it ) and end with a single asterix '*'"
+echo "-------------------------------------------------------------------------------"
+echo ""
+read -d '*' input
+echo ""
+echo "-------------------------------------------------------------------------------"
+echo "Writing this to /etc/ssl/nginx/nginx-repo.key"
+echo "-------------------------------------------------------------------------------"
+echo ""
+sudo touch /etc/ssl/nginx/nginx-repo.key
+sudo chmod 666 /etc/ssl/nginx/nginx-repo.key
+sudo echo "$input" > /etc/ssl/nginx/nginx-repo.key
+sudo chmod 644 /etc/ssl/nginx/nginx-repo.key
+echo ""
 echo "Doing an apt-get update"
 echo "-------------------------------------------------------------------------------"
 echo ""
 echo Y | sudo apt-get update
 echo ""
 echo "-------------------------------------------------------------------------------"
-echo "Backing up NGINX Plus files because the install will replace them with defaults"
+echo "Backing up NGINX Plus files because the install might replace them with defaults"
 echo "-------------------------------------------------------------------------------"
 echo ""
 sudo mkdir /etc/nginx-plus-backup 
-sudo cp -a /etc/nginx /etc/nginx-plus-backup
-sudo cp -a /var/log/nginx /var/log/nginx-plus-backup
+sudo mkdir /var/log/nginx-plus-backup
+sudo cp -a /etc/nginx/* /etc/nginx-plus-backup
+sudo cp -a /var/log/nginx/* /var/log/nginx-plus-backup
+echo ""
+echo "-------------------------------------------------------------------------------"
+echo "Enter your nginx jwt license ( paste it ) and end with a single '*' and press enter"
+echo "-------------------------------------------------------------------------------"
+echo ""
+read -d '*' input
+echo ""
+echo "-------------------------------------------------------------------------------"
+echo "Writing this to /etc/nginx/license.jwt"
+echo "-------------------------------------------------------------------------------"
+echo ""
+sudo mkdir /etc/nginx
+sudo touch /etc/nginx/license.jwt
+sudo chmod 666 /etc/nginx/license.jwt
+sudo echo "$input" > /etc/nginx/license.jwt
+sudo chmod 644 /etc/nginx/license.jwt
+echo "-------------------------------------------------------------------------------"
 echo ""
 echo "-------------------------------------------------------------------------------"
 echo "Installing NGINX Plus"
@@ -65,13 +132,14 @@ echo "Backing up the NGINX Plus default files that were just installed"
 echo "-------------------------------------------------------------------------------"
 echo ""
 sudo mkdir /etc/nginx-default-install-files
-sudo cp -a /etc/nginx /etc/nginx-default-install-files
+sudo cp -a /etc/nginx/* /etc/nginx-default-install-files
+sudo rm /etc/nginx-default-install-files/license.jwt
 echo ""
 echo "-------------------------------------------------------------------------------"
-echo "Restoring the backup of the original NGINX Plus files"
+echo "Do you want to restore the backup of the original NGINX Plus files?"
 echo "-------------------------------------------------------------------------------"
 echo ""
-sudo cp -a /etc/nginx-plus-backup /etc/nginx
+confirm && sudo cp -a /etc/nginx-plus-backup/* /etc/nginx
 echo ""
 echo "-------------------------------------------------------------------------------"
 echo "Restarting NGINX Plus"
@@ -113,8 +181,19 @@ echo ""
 echo "Testing https://127.0.0.1:8443"
 curl -k -s -o /dev/null -w "%{http_code}" https://127.0.0.1:8443
 echo ""
+echo "-------------------------------------------------------------------------------"
+echo "You should not leave your nginx repo cert and key on this machine, do you want to delete those now?"
+echo "-------------------------------------------------------------------------------"
+echo ""
+confirm && sudo rm /etc/ssl/nginx/nginx-repo.*
 echo ""
 echo "-------------------------------------------------------------------------------"
 echo "Done"
+echo "-------------------------------------------------------------------------------"
+echo ""
+echo "-------------------------------------------------------------------------------"
+echo "Note: "
+echo "NGINX didn't install with a complaint about a missing /etc/nginx/nginx.conf?"
+echo "If yes, do a sudo apt-get remove nginx-plus and a sudo apt-get install nginx-plus"
 echo "-------------------------------------------------------------------------------"
 echo ""
