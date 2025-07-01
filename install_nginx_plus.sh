@@ -5,6 +5,7 @@
 # b.wolmarans@f5.com 4/8/2025
 #
 # Only works on Ubuntu.
+# For testing purposes only, not for production.
 #
 confirm() {
     # call with a prompt string or use a default
